@@ -1,0 +1,46 @@
+syntax = "proto3";
+option go_package = "github.com/thedivinez/go-libs/finance";
+
+message Error {
+  string message = 1;
+}
+
+message PaynowPayload {
+  string ref = 1; //@gotags: json:"ref" bson:"ref"
+  double amount = 2; // @gotags: json:"amount" bson:"amount"
+  string email = 3; // @gotags: json:"email" bson:"email"
+  string phone = 4; // @gotags: json:"phone" bson:"phone"
+  string method =5; // @gotags: json:"method" bson:"method"
+}
+
+message PaynowResponse {
+  string ref = 1; //@gotags: json:"ref" bson:"ref"
+  string url = 2; // @gotags: json:"url" bson:"url"
+  string code = 3; // @gotags: json:"code" bson:"code"
+  string expiry = 4;// @gotags: json:"expiry" bson:"expiry"
+  string instructions = 5;// @gotags: json:"instructions" bson:"instructions"
+}
+
+message CryptoPayload {
+  string orderId = 1; //@gotags: json:"orderId" bson:"orderId"
+  double amount = 2; // @gotags: json:"amount" bson:"amount"
+  string method =3; // @gotags: json:"method" bson:"method"
+}
+
+message CryptoResponse {
+    string Network = 1; // @gotags: json:"network" bson:"network"
+    string OrderID = 2; // @gotags: json:"order_id" bson:"order_id"
+    string CreatedAt = 3; // @gotags: json:"created_at" bson:"created_at"
+    double PayAmount = 4; // @gotags: json:"pay_amount" bson:"pay_amount"
+    string PaymentID = 5; // @gotags: json:"payment_id" bson:"payment_id"
+    string PayAddress = 6; // @gotags: json:"pay_address" bson:"pay_address"
+    string PayCurrency = 7; // @gotags: json:"pay_currency" bson:"pay_currency"
+    string PriceCurrency = 8; // @gotags: json:"price_currency" bson:"price_currency"
+    string PaymentStatus = 9;   // @gotags: json:"payment_status" bson:"payment_status"
+    string ExpirationEstimateDate = 10; // @gotags: json:"expiration_estimate_date" bson:"expiration_estimate_date"
+}
+
+service Payment {
+	rpc MakePaynowDeposit (PaynowPayload) returns (PaynowResponse);
+  rpc MakeCryptoDeposit (CryptoPayload) returns (CryptoResponse);
+}
