@@ -3,14 +3,13 @@ from paynow import Paynow
 from dotenv import load_dotenv
 import proto.finance_pb2 as types
 import proto.finance_pb2_grpc as finance
-from google.protobuf.json_format import Parse
 load_dotenv()
 
 result_url = f"{os.getenv('BASE_URL')}/result"
 paynow = Paynow(os.getenv('INTEGRATION_ID'), os.getenv('INTEGRATION_KEY'),result_url,result_url)
 
 class PaymentService(finance.PaymentServicer):
-    def MakePaynowDeposit(self, request, context):
+    def MakePaynowDeposit(self, request:types.PaynowPayload, context):
         try:
             payment = paynow.create_payment(request.ref, request.email)
             payment.add(request.ref, request.amount)
@@ -28,14 +27,29 @@ class PaymentService(finance.PaymentServicer):
             return types.Error(message=str(ex))
         
     def MakeCryptoDeposit(self, request: types.CryptoPayload, context):
-        webhook=f"{os.getenv('BASE_URL')}/finance/crypto/deposit/{request.orderId}"
-        response = requests.post(f"{os.getenv('CRYPTO_BASE_URL')}/payment",json={
-            "price_currency": "usd",
-            "is_fee_paid_by_user": True,
-            "ipn_callback_url": webhook,
-            "order_id": request.orderId,
-            "price_amount": request.amount,
-            "pay_currency": request.method,
-        },headers={"X-Api-Key": os.getenv('CRYPTO_API_KEY')})
-        if response.status_code != 200: return types.Error(message=response.text)
-        return Parse(response.json(), types.CryptoResponse())
+        try:
+            webhook=f"{os.getenv('BASE_URL')}/finance/crypto/deposit/{request.orderId}"
+            response = requests.post(f"{os.getenv('CRYPTO_BASE_URL')}/payment",json={
+                "price_currency": "usd",
+                "is_fee_paid_by_user": True,
+                "ipn_callback_url": webhook,
+                "order_id": request.orderId,
+                "price_amount": request.amount,
+                "pay_currency": request.method,
+            },headers={"X-Api-Key": os.getenv('CRYPTO_API_KEY')})
+            if response.status_code != 201: return types.Error(message=response.text)
+            data = response.json()
+            return types.CryptoResponse(
+                Network=data.get("network"),
+                OrderID=data.get("order_id"),
+                CreatedAt=data.get("created_at"),
+                PayAmount=data.get("pay_amount"),
+                PaymentID=data.get("payment_id"),
+                PayAddress=data.get("pay_address"),
+                PayCurrency=data.get("pay_currency"),
+                PriceCurrency=data.get("price_currency"),
+                PaymentStatus=data.get("payment_status"),
+                ExpirationEstimateDate=data.get("expiration_estimate_date"),
+            )
+        except Exception as ex:
+            return types.Error(message=str(ex))
