@@ -5,12 +5,11 @@ import proto.finance_pb2 as types
 import proto.finance_pb2_grpc as finance
 load_dotenv()
 
-result_url = f"{os.getenv('BASE_URL')}/result"
-paynow = Paynow(os.getenv('INTEGRATION_ID'), os.getenv('INTEGRATION_KEY'),result_url,result_url)
-
 class PaymentService(finance.PaymentServicer):
     def MakePaynowDeposit(self, request:types.PaynowPayload, context):
         try:
+            result_url=f"{os.getenv('BASE_URL')}/finance/deposit-webhook/{request.ref}?provider=paynow"
+            paynow = Paynow(os.getenv('INTEGRATION_ID'), os.getenv('INTEGRATION_KEY'),result_url,result_url)
             payment = paynow.create_payment(request.ref, request.email)
             payment.add(request.ref, request.amount)
             response = paynow.send_mobile(payment, request.phone, request.method)
@@ -28,7 +27,7 @@ class PaymentService(finance.PaymentServicer):
         
     def MakeCryptoDeposit(self, request: types.CryptoPayload, context):
         try:
-            webhook=f"{os.getenv('BASE_URL')}/finance/crypto/deposit/{request.orderId}"
+            webhook=f"{os.getenv('BASE_URL')}/finance/deposit-webhook/{request.orderId}?provider=crypto"
             response = requests.post(f"{os.getenv('CRYPTO_BASE_URL')}/payment",json={
                 "price_currency": "usd",
                 "is_fee_paid_by_user": True,
