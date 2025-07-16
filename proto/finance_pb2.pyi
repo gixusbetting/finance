@@ -4,12 +4,6 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Error(_message.Message):
-    __slots__ = ("message",)
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    message: str
-    def __init__(self, message: _Optional[str] = ...) -> None: ...
-
 class PaynowPayload(_message.Message):
     __slots__ = ("ref", "amount", "email", "phone", "method")
     REF_FIELD_NUMBER: _ClassVar[int]
@@ -25,18 +19,20 @@ class PaynowPayload(_message.Message):
     def __init__(self, ref: _Optional[str] = ..., amount: _Optional[float] = ..., email: _Optional[str] = ..., phone: _Optional[str] = ..., method: _Optional[str] = ...) -> None: ...
 
 class PaynowResponse(_message.Message):
-    __slots__ = ("ref", "url", "code", "expiry", "instructions")
+    __slots__ = ("ref", "url", "code", "expiry", "instructions", "statusCode")
     REF_FIELD_NUMBER: _ClassVar[int]
     URL_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     EXPIRY_FIELD_NUMBER: _ClassVar[int]
     INSTRUCTIONS_FIELD_NUMBER: _ClassVar[int]
+    STATUSCODE_FIELD_NUMBER: _ClassVar[int]
     ref: str
     url: str
     code: str
     expiry: str
     instructions: str
-    def __init__(self, ref: _Optional[str] = ..., url: _Optional[str] = ..., code: _Optional[str] = ..., expiry: _Optional[str] = ..., instructions: _Optional[str] = ...) -> None: ...
+    statusCode: int
+    def __init__(self, ref: _Optional[str] = ..., url: _Optional[str] = ..., code: _Optional[str] = ..., expiry: _Optional[str] = ..., instructions: _Optional[str] = ..., statusCode: _Optional[int] = ...) -> None: ...
 
 class CryptoPayload(_message.Message):
     __slots__ = ("orderId", "amount", "method")
@@ -49,7 +45,7 @@ class CryptoPayload(_message.Message):
     def __init__(self, orderId: _Optional[str] = ..., amount: _Optional[float] = ..., method: _Optional[str] = ...) -> None: ...
 
 class CryptoResponse(_message.Message):
-    __slots__ = ("Network", "OrderID", "CreatedAt", "PayAmount", "PaymentID", "PayAddress", "PayCurrency", "PriceCurrency", "PaymentStatus", "ExpirationEstimateDate")
+    __slots__ = ("Network", "OrderID", "CreatedAt", "PayAmount", "PaymentID", "PayAddress", "PayCurrency", "PriceCurrency", "PaymentStatus", "ExpirationEstimateDate", "StatusCode", "Instructions")
     NETWORK_FIELD_NUMBER: _ClassVar[int]
     ORDERID_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
@@ -60,6 +56,8 @@ class CryptoResponse(_message.Message):
     PRICECURRENCY_FIELD_NUMBER: _ClassVar[int]
     PAYMENTSTATUS_FIELD_NUMBER: _ClassVar[int]
     EXPIRATIONESTIMATEDATE_FIELD_NUMBER: _ClassVar[int]
+    STATUSCODE_FIELD_NUMBER: _ClassVar[int]
+    INSTRUCTIONS_FIELD_NUMBER: _ClassVar[int]
     Network: str
     OrderID: str
     CreatedAt: str
@@ -70,4 +68,6 @@ class CryptoResponse(_message.Message):
     PriceCurrency: str
     PaymentStatus: str
     ExpirationEstimateDate: str
-    def __init__(self, Network: _Optional[str] = ..., OrderID: _Optional[str] = ..., CreatedAt: _Optional[str] = ..., PayAmount: _Optional[float] = ..., PaymentID: _Optional[str] = ..., PayAddress: _Optional[str] = ..., PayCurrency: _Optional[str] = ..., PriceCurrency: _Optional[str] = ..., PaymentStatus: _Optional[str] = ..., ExpirationEstimateDate: _Optional[str] = ...) -> None: ...
+    StatusCode: int
+    Instructions: str
+    def __init__(self, Network: _Optional[str] = ..., OrderID: _Optional[str] = ..., CreatedAt: _Optional[str] = ..., PayAmount: _Optional[float] = ..., PaymentID: _Optional[str] = ..., PayAddress: _Optional[str] = ..., PayCurrency: _Optional[str] = ..., PriceCurrency: _Optional[str] = ..., PaymentStatus: _Optional[str] = ..., ExpirationEstimateDate: _Optional[str] = ..., StatusCode: _Optional[int] = ..., Instructions: _Optional[str] = ...) -> None: ...

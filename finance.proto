@@ -1,10 +1,6 @@
 syntax = "proto3";
 option go_package = "github.com/thedivinez/go-libs/finance";
 
-message Error {
-  string message = 1;
-}
-
 message PaynowPayload {
   string ref = 1; //@gotags: json:"ref" bson:"ref"
   double amount = 2; // @gotags: json:"amount" bson:"amount"
@@ -14,11 +10,12 @@ message PaynowPayload {
 }
 
 message PaynowResponse {
-  string ref = 1; //@gotags: json:"ref" bson:"ref"
-  string url = 2; // @gotags: json:"url" bson:"url"
-  string code = 3; // @gotags: json:"code" bson:"code"
-  string expiry = 4;// @gotags: json:"expiry" bson:"expiry"
-  string instructions = 5;// @gotags: json:"instructions" bson:"instructions"
+  string ref = 1; //@gotags: json:"ref,omitempty" bson:"ref,omitempty"
+  string url = 2; // @gotags: json:"url,omitempty" bson:"url,omitempty"
+  string code = 3; // @gotags: json:"code,omitempty" bson:"code,omitempty"
+  string expiry = 4;// @gotags: json:"expiry,omitempty" bson:"expiry,omitempty"
+  string instructions = 5;// @gotags: json:"instructions,omitempty" bson:"instructions,omitempty"
+  int64 statusCode = 6;// @gotags: json:"status_code,omitempty" bson:"status_code,omitempty"
 }
 
 message CryptoPayload {
@@ -28,16 +25,18 @@ message CryptoPayload {
 }
 
 message CryptoResponse {
-    string Network = 1; // @gotags: json:"network" bson:"network"
-    string OrderID = 2; // @gotags: json:"order_id" bson:"order_id"
-    string CreatedAt = 3; // @gotags: json:"created_at" bson:"created_at"
-    double PayAmount = 4; // @gotags: json:"pay_amount" bson:"pay_amount"
-    string PaymentID = 5; // @gotags: json:"payment_id" bson:"payment_id"
-    string PayAddress = 6; // @gotags: json:"pay_address" bson:"pay_address"
-    string PayCurrency = 7; // @gotags: json:"pay_currency" bson:"pay_currency"
-    string PriceCurrency = 8; // @gotags: json:"price_currency" bson:"price_currency"
-    string PaymentStatus = 9;   // @gotags: json:"payment_status" bson:"payment_status"
-    string ExpirationEstimateDate = 10; // @gotags: json:"expiration_estimate_date" bson:"expiration_estimate_date"
+    string Network = 1; // @gotags: json:"network,omitempty" bson:"network,omitempty"
+    string OrderID = 2; // @gotags: json:"order_id,omitempty" bson:"order_id,omitempty"
+    string CreatedAt = 3; // @gotags: json:"created_at,omitempty" bson:"created_at,omitempty"
+    double PayAmount = 4; // @gotags: json:"pay_amount,omitempty" bson:"pay_amount,omitempty"
+    string PaymentID = 5; // @gotags: json:"payment_id,omitempty" bson:"payment_id,omitempty"
+    string PayAddress = 6; // @gotags: json:"pay_address,omitempty" bson:"pay_address,omitempty"
+    string PayCurrency = 7; // @gotags: json:"pay_currency,omitempty" bson:"pay_currency,omitempty"
+    string PriceCurrency = 8; // @gotags: json:"price_currency,omitempty" bson:"price_currency,omitempty"
+    string PaymentStatus = 9;   // @gotags: json:"payment_status,omitempty" bson:"payment_status,omitempty"
+    string ExpirationEstimateDate = 10; // @gotags: json:"expiration_estimate_date,omitempty" bson:"expiration_estimate_date,omitempty"
+    int64 StatusCode = 11;// @gotags: json:"status_code,omitempty" bson:"status_code,omitempty"
+    string Instructions = 12;// @gotags: json:"instructions,omitempty" bson:"instructions,omitempty"
 }
 
 service Payment {
