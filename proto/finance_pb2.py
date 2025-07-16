@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rfinance.proto\"\x18\n\x05\x45rror\x12\x0f\n\x07message\x18\x01 \x01(\t\"Z\n\rPaynowPayload\x12\x0b\n\x03ref\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x01\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\r\n\x05phone\x18\x04 \x01(\t\x12\x0e\n\x06method\x18\x05 \x01(\t\"^\n\x0ePaynowResponse\x12\x0b\n\x03ref\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0e\n\x06\x65xpiry\x18\x04 \x01(\t\x12\x14\n\x0cinstructions\x18\x05 \x01(\t\"@\n\rCryptoPayload\x12\x0f\n\x07orderId\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x01\x12\x0e\n\x06method\x18\x03 \x01(\t\"\xe2\x01\n\x0e\x43ryptoResponse\x12\x0f\n\x07Network\x18\x01 \x01(\t\x12\x0f\n\x07OrderID\x18\x02 \x01(\t\x12\x11\n\tCreatedAt\x18\x03 \x01(\t\x12\x11\n\tPayAmount\x18\x04 \x01(\x01\x12\x11\n\tPaymentID\x18\x05 \x01(\t\x12\x12\n\nPayAddress\x18\x06 \x01(\t\x12\x13\n\x0bPayCurrency\x18\x07 \x01(\t\x12\x15\n\rPriceCurrency\x18\x08 \x01(\t\x12\x15\n\rPaymentStatus\x18\t \x01(\t\x12\x1e\n\x16\x45xpirationEstimateDate\x18\n \x01(\t2u\n\x07Payment\x12\x34\n\x11MakePaynowDeposit\x12\x0e.PaynowPayload\x1a\x0f.PaynowResponse\x12\x34\n\x11MakeCryptoDeposit\x12\x0e.CryptoPayload\x1a\x0f.CryptoResponseB\'Z%github.com/thedivinez/go-libs/financeb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rfinance.proto\"Z\n\rPaynowPayload\x12\x0b\n\x03ref\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x01\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\r\n\x05phone\x18\x04 \x01(\t\x12\x0e\n\x06method\x18\x05 \x01(\t\"r\n\x0ePaynowResponse\x12\x0b\n\x03ref\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0e\n\x06\x65xpiry\x18\x04 \x01(\t\x12\x14\n\x0cinstructions\x18\x05 \x01(\t\x12\x12\n\nstatusCode\x18\x06 \x01(\x03\"@\n\rCryptoPayload\x12\x0f\n\x07orderId\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x01\x12\x0e\n\x06method\x18\x03 \x01(\t\"\x8c\x02\n\x0e\x43ryptoResponse\x12\x0f\n\x07Network\x18\x01 \x01(\t\x12\x0f\n\x07OrderID\x18\x02 \x01(\t\x12\x11\n\tCreatedAt\x18\x03 \x01(\t\x12\x11\n\tPayAmount\x18\x04 \x01(\x01\x12\x11\n\tPaymentID\x18\x05 \x01(\t\x12\x12\n\nPayAddress\x18\x06 \x01(\t\x12\x13\n\x0bPayCurrency\x18\x07 \x01(\t\x12\x15\n\rPriceCurrency\x18\x08 \x01(\t\x12\x15\n\rPaymentStatus\x18\t \x01(\t\x12\x1e\n\x16\x45xpirationEstimateDate\x18\n \x01(\t\x12\x12\n\nStatusCode\x18\x0b \x01(\x03\x12\x14\n\x0cInstructions\x18\x0c \x01(\t2u\n\x07Payment\x12\x34\n\x11MakePaynowDeposit\x12\x0e.PaynowPayload\x1a\x0f.PaynowResponse\x12\x34\n\x11MakeCryptoDeposit\x12\x0e.CryptoPayload\x1a\x0f.CryptoResponseB\'Z%github.com/thedivinez/go-libs/financeb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,16 +32,14 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'finance_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z%github.com/thedivinez/go-libs/finance'
-  _globals['_ERROR']._serialized_start=17
-  _globals['_ERROR']._serialized_end=41
-  _globals['_PAYNOWPAYLOAD']._serialized_start=43
-  _globals['_PAYNOWPAYLOAD']._serialized_end=133
-  _globals['_PAYNOWRESPONSE']._serialized_start=135
-  _globals['_PAYNOWRESPONSE']._serialized_end=229
-  _globals['_CRYPTOPAYLOAD']._serialized_start=231
-  _globals['_CRYPTOPAYLOAD']._serialized_end=295
-  _globals['_CRYPTORESPONSE']._serialized_start=298
-  _globals['_CRYPTORESPONSE']._serialized_end=524
-  _globals['_PAYMENT']._serialized_start=526
-  _globals['_PAYMENT']._serialized_end=643
+  _globals['_PAYNOWPAYLOAD']._serialized_start=17
+  _globals['_PAYNOWPAYLOAD']._serialized_end=107
+  _globals['_PAYNOWRESPONSE']._serialized_start=109
+  _globals['_PAYNOWRESPONSE']._serialized_end=223
+  _globals['_CRYPTOPAYLOAD']._serialized_start=225
+  _globals['_CRYPTOPAYLOAD']._serialized_end=289
+  _globals['_CRYPTORESPONSE']._serialized_start=292
+  _globals['_CRYPTORESPONSE']._serialized_end=560
+  _globals['_PAYMENT']._serialized_start=562
+  _globals['_PAYMENT']._serialized_end=679
 # @@protoc_insertion_point(module_scope)

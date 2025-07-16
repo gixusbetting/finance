@@ -1,3 +1,4 @@
+import grpc
 import os,requests
 from paynow import Paynow 
 from dotenv import load_dotenv
@@ -6,7 +7,7 @@ import proto.finance_pb2_grpc as finance
 load_dotenv()
 
 class PaymentService(finance.PaymentServicer):
-    def MakePaynowDeposit(self, request:types.PaynowPayload, context):
+    def MakePaynowDeposit(self, request:types.PaynowPayload, context: grpc.aio.ServicerContext):
         try:
             result_url=f"{os.getenv('BASE_URL')}/finance/deposit-webhook/{request.ref}?provider=paynow"
             paynow = Paynow(os.getenv('INTEGRATION_ID'), os.getenv('INTEGRATION_KEY'),result_url,result_url)
@@ -19,13 +20,14 @@ class PaymentService(finance.PaymentServicer):
                 instructions=response.data.get('instructions') # type: ignore
                 code = response.data.get('authorizationcode') # type: ignore
                 expiry = response.data.get('authorizationexpires') # type: ignore
-                return types.PaynowResponse(ref=ref,url=pollurl,code=code,expiry=expiry,instructions=instructions)
+                return types.PaynowResponse(ref=ref,url=pollurl,code=code,expiry=expiry,instructions=instructions,statusCode=200)
             else:
-                return types.Error(message=response.data.get('error')) # type: ignore
+                print("=====================",response.status)
+                return types.PaynowResponse(instructions=response.data.get('error'),statusCode=response.status) # type: ignore
         except Exception as ex:
-            return types.Error(message=str(ex))
+            return types.PaynowResponse(instructions=str(ex),statusCode=500)
         
-    def MakeCryptoDeposit(self, request: types.CryptoPayload, context):
+    def MakeCryptoDeposit(self, request: types.CryptoPayload, context: grpc.aio.ServicerContext):
         try:
             webhook=f"{os.getenv('BASE_URL')}/finance/deposit-webhook/{request.orderId}?provider=crypto"
             response = requests.post(f"{os.getenv('CRYPTO_BASE_URL')}/payment",json={
@@ -36,7 +38,7 @@ class PaymentService(finance.PaymentServicer):
                 "price_amount": request.amount,
                 "pay_currency": request.method,
             },headers={"X-Api-Key": os.getenv('CRYPTO_API_KEY')})
-            if response.status_code != 201: return types.Error(message=response.text)
+            if response.status_code != 201: return types.CryptoResponse(Instructions=response.text,StatusCode=response.status_code)
             data = response.json()
             return types.CryptoResponse(
                 Network=data.get("network"),
@@ -49,6 +51,7 @@ class PaymentService(finance.PaymentServicer):
                 PriceCurrency=data.get("price_currency"),
                 PaymentStatus=data.get("payment_status"),
                 ExpirationEstimateDate=data.get("expiration_estimate_date"),
+                StatusCode=200
             )
         except Exception as ex:
-            return types.Error(message=str(ex))
+            return types.CryptoResponse(Instructions=str(ex),StatusCode=500)
