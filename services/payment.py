@@ -22,7 +22,6 @@ class PaymentService(finance.PaymentServicer):
                 expiry = response.data.get('authorizationexpires') # type: ignore
                 return types.PaynowResponse(ref=ref,url=pollurl,code=code,expiry=expiry,instructions=instructions,statusCode=200)
             else:
-                print("=====================",response.status)
                 return types.PaynowResponse(instructions=response.data.get('error'),statusCode=response.status) # type: ignore
         except Exception as ex:
             return types.PaynowResponse(instructions=str(ex),statusCode=500)
